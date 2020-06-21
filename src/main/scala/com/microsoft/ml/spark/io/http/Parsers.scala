@@ -13,7 +13,7 @@ import org.apache.spark.ml.param._
 import org.apache.spark.ml.util.Identifiable
 import org.apache.spark.ml.{ComplexParamsReadable, ComplexParamsWritable, Transformer}
 import org.apache.spark.sql.execution.python.UserDefinedPythonFunction
-import org.apache.spark.sql.expressions.UserDefinedFunction
+import org.apache.spark.sql.expressions.{UDFExtractor, UserDefinedFunction}
 import org.apache.spark.sql.functions._
 import org.apache.spark.sql.types.{ArrayType, DataType, StringType, StructType}
 import org.apache.spark.sql.{DataFrame, Dataset, Row}
@@ -89,7 +89,7 @@ class CustomInputParser(val uid: String) extends HTTPInputParser with ComplexPar
 
   val udfScala = new UDFParam(
       this, "udfScala", "User Defined Function to be applied to the DF input col",
-      { x: UserDefinedFunction => x.dataType == HTTPSchema.Request })
+      { x: UserDefinedFunction => UDFExtractor.getDataType(x) == HTTPSchema.Request })
 
   val udfPython = new UDPyFParam(
       this, "udfPython", "User Defined Python Function to be applied to the DF input col",
@@ -261,7 +261,7 @@ class CustomOutputParser(val uid: String) extends HTTPOutputParser with ComplexP
     assert(schema(getInputCol).dataType == HTTPSchema.Response)
     schema.add(getOutputCol, {
       (get(udfScala), get(udfPython)) match {
-        case (Some(f), None) => f.dataType
+        case (Some(f), None) => UDFExtractor.getDataType(f)
         case (None, Some(f)) => f.dataType
         case _ => throw new IllegalArgumentException("Need to set either parseOutput or parseOutputPy")
       }

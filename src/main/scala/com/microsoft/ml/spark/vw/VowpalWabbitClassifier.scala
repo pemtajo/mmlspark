@@ -89,7 +89,7 @@ class VowpalWabbitClassificationModel(override val uid: String)
 
   override def copy(extra: ParamMap): this.type = defaultCopy(extra)
 
-  protected override def predictRaw(features: Row): Vector = {
+  override def predictRaw(features: Row): Vector = {
     throw new NotImplementedError("Not implemented")
   }
 

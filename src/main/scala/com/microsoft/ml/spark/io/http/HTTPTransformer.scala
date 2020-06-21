@@ -9,6 +9,7 @@ import org.apache.spark.ml.{ComplexParamsReadable, ComplexParamsWritable, Transf
 import org.apache.spark.ml.param._
 import org.apache.spark.ml.util.Identifiable
 import org.apache.spark.sql.catalyst.encoders.RowEncoder
+import org.apache.spark.sql.expressions.UDFExtractor
 import org.apache.spark.sql.functions.udf
 import org.apache.spark.sql.types._
 import org.apache.spark.sql.{DataFrame, Dataset, Row}
@@ -21,7 +22,7 @@ trait HasHandler extends Params {
     this, "handler", "Which strategy to use when handling requests")
 
   /** @group getParam */
-  def getHandler: HandlerFunc = $(handler).f.asInstanceOf[HandlerFunc]
+  def getHandler: HandlerFunc = UDFExtractor.getF($(handler)).asInstanceOf[HandlerFunc]
 
   def setHandler(v: HandlerFunc): HasHandler.this.type = {
     set(handler, udf(v, StringType))

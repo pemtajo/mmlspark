@@ -8,11 +8,11 @@ import scala.sys.process.Process
 
 val condaEnvName = "mmlspark"
 name := "mmlspark"
-organization := "com.microsoft.ml.spark"
-crossScalaVersions := Seq("2.12.11", "2.11.12")
+organization := "nubank"
+crossScalaVersions := Seq("2.12.11")
 scalaVersion := crossScalaVersions.value.head
 
-val sparkVersion = "2.4.5"
+val sparkVersion = "3.0.0"
 
 libraryDependencies ++= Seq(
   "org.apache.spark" %% "spark-core" % sparkVersion % "compile",
