@@ -11,7 +11,7 @@ name := "mmlspark"
 organization := "nubank"
 crossScalaVersions := Seq("2.12.11")
 scalaVersion := crossScalaVersions.value.head
-
+version := "1.0.0-rc1-NUBANK"
 val sparkVersion = "3.0.0"
 
 libraryDependencies ++= Seq(
