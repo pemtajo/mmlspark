@@ -11,8 +11,9 @@ import xerial.sbt.Sonatype._
 val condaEnvName = "mmlspark"
 val sparkVersion = "3.1.2"
 name := "mmlspark"
-ThisBuild / organization := "com.microsoft.ml.spark"
-ThisBuild / scalaVersion := "2.12.10"
+ThisBuild / organization := "nubank"
+ThisBuild / scalaVersion := "2.12.15"
+version := "1.0.0-rc4-NUBANK"
 
 val scalaMajorVersion = 2.12
 
@@ -313,7 +314,12 @@ pgpPublicRing := {
   }
   temp
 }
-publishTo := sonatypePublishToBundle.value
+publishTo := {
+  if (isSnapshot.value)
+    Some("nu-snapshots" at "s3://nu-maven/snapshots/")
+  else
+    Some("nu-maven" at "s3://s3-sa-east-1.amazonaws.com/nu-maven/releases/")
+}
 
 dynverSonatypeSnapshots in ThisBuild := true
 dynverSeparator in ThisBuild := "-"
