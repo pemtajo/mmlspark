@@ -384,9 +384,4 @@ pgpPublicRing := {
 
 dynverSonatypeSnapshots in ThisBuild := true
 dynverSeparator in ThisBuild := "-"
-publishTo := {
-  if (isSnapshot.value)
-    Some("nu-snapshots" at "s3://nu-maven/snapshots/")
-  else
-    Some("nu-maven" at "s3://s3-sa-east-1.amazonaws.com/nu-maven/releases/")
-}
+
